@@ -7,7 +7,7 @@ import (
 	"os/exec"
 )
 
-const gitPath = ""
+var gitPath = ""
 
 func main() {
 	http.HandleFunc("/", pullRequest)
@@ -17,7 +17,8 @@ func main() {
 func pullRequest(w http.ResponseWriter, r *http.Request) {
 	cmd := exec.Command("git", "pull")
 	cmd.Dir = gitPath
-	err := cmd.Run()
+	output, err := cmd.Output()
+	fmt.Println(string(output))
 	if err != nil {
 		fmt.Fprintf(w, "err: %s", err.Error())
 		return
